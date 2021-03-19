@@ -18,6 +18,8 @@ else
     INSPECTOR_EXTRA_ARGS=""
 fi
 
+IRONIC_INSPECTOR_VLAN_INTERFACES=${IRONIC_INSPECTOR_VLAN_INTERFACES:-"all"}
+
 # Copy files to shared mount
 cp /tmp/inspector.ipxe /shared/html/inspector.ipxe
 cp /tmp/dualboot.ipxe /shared/html/dualboot.ipxe
@@ -27,6 +29,7 @@ cp /tmp/uefi_esp.img /shared/html/uefi_esp.img
 sed -i -e s/IRONIC_IP/${IRONIC_URL_HOST}/g \
     -e s/HTTP_PORT/${HTTP_PORT}/g \
     -e "s|EXTRA_ARGS|${INSPECTOR_EXTRA_ARGS}|g" \
+    -e s/VLAN_INTERFACES/${IRONIC_INSPECTOR_VLAN_INTERFACES}/g \
     /shared/html/inspector.ipxe
 
 sed -i 's/^Listen .*$/Listen [::]:'"$HTTP_PORT"'/' /etc/httpd/conf/httpd.conf
